@@ -370,7 +370,9 @@ _The approach used here is slightly different than FMI 1.0 to reduce the need fo
 
 Element `UnitDefinitions` of `fmiModelDescription` is defined as:
 
-image::images/UnitDefinitions_schema.png[]
+
+image::images/fmiModelDescription_UnitDefinitions_Schema.png[]
+image::images/fmiModelDescription_UnitDefinitions_Unit_Schema.png[]
 
 It consists of zero or more `Unit` definitions.
 _[If no units are defined, element `<UnitDefinitions>` must not be present._
@@ -382,7 +384,7 @@ _Since there is no standard to represent units in strings, and there are differe
 
 Optionally, a value given in unit `Unit` can be converted to a value with respect to unit `BaseUnit` utilizing the conversion `factor` and `offset` attributes:
 
-image::images/BaseUnit_schema.png[width=50%, align="center"]
+image::images/fmi3Unit_BaseUnit_Schema.png[width=50%, align="center"]
 
 Besides `factor` and `offset`, the `BaseUnit` definition consists of the exponents of the 7 SI base units `kg`, `m`, `s`, `A`, `K`, `mol`, `cd`, and of the exponent of the SI derived unit `rad`.
 _[Depending on the analysis/operation carried out, the SI derived unit `rad` is or is not utilized, see discussion below._
@@ -541,7 +543,7 @@ _]_
 
 Additionally to the unit definition, optionally a set of display units can be defined that can be utilized for <<input>> / <<output>> of a value:
 
-image::images/DisplayUnit_schema.png[width=80%, align="center"]
+image::images/fmi3Unit_DisplayUnit_Schema.png[width=80%, align="center"]
 
 A `DisplayUnit` is defined by `name`, `factor` and `offset`.
 The attribute `name` must be unique with respect to all other `names` of the `DisplayUnit` definitions of the same `Unit` [(different `Unit` elements may have the same `DisplayUnit` names)].
@@ -576,6 +578,9 @@ The schema definition is present in a separate file `fmi3Unit.xsd`.
 Element `TypeDefinitions` of `fmiModelDescription` is defined as:
 
 image::images/TypeDefinitions_schema.png[width=90%, align="center"]
+//TODO: Cannot find SimpleType
+image::images/fmiModelDescription_TypeDefinitions_Schema.png[width=90%, align="center"]
+//image::images/fmi3TypeDefinitionBase_Schema.png[width=70%, align="center"]
 
 This element consists of a set of `SimpleType` definitions according to schema `fmi3SimpleType` in file `fmi3Type.xsd`.
 One `SimpleType` has a type `name` and `description` as attributes.
@@ -584,11 +589,43 @@ Furthermore, `name` of a `SimpleType` must be different to all `name` attributes
 Additionally, one variable type element must be present.
 They have the following definitions:
 
-image::images/Real_schema.png[width=50%, align="center"]
+image::images/fmi3VariableBase_Schema.png[width=80%, align="center"]
 
-image::images/Integer_schema.png[width=50%, align="center"]
+image::images/fmi3VariableBase_Dimension_Schema.png[width=50%, align="center"]
 
-image::images/Enumeration_schema.png[width=80%, align="center"]
+image::images/fmi3VariableBase_Annotations_Schema.png[width=50%, align="center"]
+
+image::images/fmi3Float32_Schema.png[width=50%, align="center"]
+
+image::images/fmi3Float64_Schema.png[[width=50%, align="center"]]
+
+image::images/fmi3Int8_Schema.png[width=50%, align="center"]
+
+image::images/fmi3UInt8_Schema.png[width=50%, align="center"]
+
+image::images/fmi3Int16_Schema.png[width=50%, align="center"]
+
+image::images/fmi3UInt16_Schema.png[width=50%, align="center"]
+
+image::images/fmi3Int32_Schema.png[width=50%, align="center"]
+
+image::images/fmi3UInt32_Schema.png[width=50%, align="center"]
+
+image::images/fmi3Int64_Schema.png[width=50%, align="center"]
+
+image::images/fmi3UInt64_Schema.png[width=50%, align="center"]
+
+image::images/fmi3UInt64_Schema.png[width=50%, align="center"]
+
+image::images/fmi3Boolean_Schema.png[width=80%, align="center"]
+
+image::images/fmi3String_Schema.png[width=80%, align="center"]
+
+image::images/fmi3Binary_Schema.png[width=80%, align="center"]
+
+image::images/fmi3Enumeration_Schema.png[width=80%, align="center"]
+
+image::images/fmi3Clock_Schema.png[width=80%, align="center"]
 
 These definitions are used as default values in variable elements _[in order that, say, the definition of a `Torque` type does not have to be repeated over and over again]_.
 The attributes and elements have the following meaning:
@@ -737,13 +774,15 @@ If `strict = true` it is required to provide values for `intervalCounter`, `shif
 |====
 
 [#TypeDefinitions]
-image::images/clock_variable.png[]
+//image::images/clock_variable.png[]
+//TODO: Image removed, see above
 
 ==== Definition of Log Categories (LogCategories) [[definition-of-log-categories]]
 
 Element `LogCategories` of `fmiModelDescription` is defined as:
 
-image::images/LogCategories_schema.png[width=70%, align="center"]
+image::images/fmiModelDescription_LogCategories_Schema.png[width=70%, align="center"]
+image::images/fmiModelDescription_LogCategories_Category_Schema.png[width=70%, align="center"]
 
 `LogCategories` defines an unordered set of category strings that can be utilized to define the log output via function <<logMessage>>, see <<creation-destruction-and-logging>>.
 A tool is free to use any `normalizedString` for a category value.
@@ -801,7 +840,7 @@ _The approach introduced in FMI 2.0 is therefore much more efficient.]_
 
 Element `DefaultExperiment` of `fmiModelDescription` is defined as:
 
-image::images/DefaultExperiment_schema.png[width=70%, align="center"]
+image::images/fmiModelDescription_DefaultExperiment_Schema.png[width=70%, align="center"]
 
 `DefaultExperiment` consists of the optional default start time, stop time, relative tolerance, and step size for the first simulation run.
 A tool may ignore this information.
@@ -1121,7 +1160,9 @@ _[So the FMU icon should be placed first in the XML file, terminal below.]_
 
 Element `VendorAnnotations` of `fmiModelDescription` is defined as:
 
-image::images/VendorAnnotations_schema.png[width=80%, align="center"]
+//image::images/VendorAnnotations_schema.png[width=80%, align="center"]
+image::images/fmi3Annotation_Schema.png[width=80%, align="center"]
+image::images/fmi3Annotation_Tool_Schema.png[width=80%, align="center"]
 
 `VendorAnnotations` consist of an ordered set of annotations that are identified by the name of the tool that can interpret the `any` element.
 The `any` element can be an arbitrary XML data structure defined by the tool.
@@ -1132,7 +1173,8 @@ Attribute `name` must be unique with respect to all other elements of the `Vendo
 The `ModelVariables` element of `fmiModelDescription` is the central part of the model description.
 It provides the static information of all exposed variables and is defined as:
 
-image::images/ModelVariables_schema.png[width=100%, align="center"]
+//image::images/ModelVariables_schema.png[width=100%, align="center"]
+image::images/fmiModelDescription_ModelVariables_Schema.png[width=100%, align="center"]
 
 The `ModelVariables` element consists of an ordered set of variable elements (see figure above).
 Variable elements can uniformly represent variables of primitive (atomic) types, like single floating point or integer variables, or as well as arrays of an arbitrary (but fixed) number of dimensions. The schema definition is present in a separate file `fmi3Variable.xsd`.
